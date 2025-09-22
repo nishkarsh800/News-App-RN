@@ -1,14 +1,12 @@
 import { StyleSheet, Text, View } from 'react-native'
 import React from 'react'
-import { useSafeAreaInsets } from 'react-native-safe-area-context'
 
 type Props = {}
 
 const Page = (props: Props) => {
-  useSafeAreaInsets
   return (
     <View style={styles.container}>
-      <Text>Home Screen</Text>
+      <Text>Discover Screen</Text>
     </View>
   )
 }
