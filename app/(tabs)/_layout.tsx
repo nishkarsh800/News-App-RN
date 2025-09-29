@@ -1,6 +1,6 @@
-import React from 'react'
-import { Tabs } from 'expo-router'
 import { TabBar } from '@/components/TabBar'
+import { Tabs } from 'expo-router'
+import React from 'react'
 
 const TabLayout = () => {
   return (

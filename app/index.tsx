@@ -1,9 +1,9 @@
-import { StyleSheet, Text, TouchableOpacity, View, ImageBackground } from "react-native";
-import React from "react";
+import { Colors } from "@/constants/Colors";
 import { useRouter } from "expo-router";
-import {Colors} from "@/constants/Colors"
-import Animated, { FadeInRight } from "react-native-reanimated";
 import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { ImageBackground, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Animated, { FadeInRight } from "react-native-reanimated";
 
 
 const Page = () => {
@@ -71,7 +71,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.tint,
     paddingVertical : 15,
     marginVertical : 20,
-    aliginItems: 'center',
+    alignItems: 'center',
     borderRadius: 10
   },
 
