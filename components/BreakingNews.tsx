@@ -1,7 +1,7 @@
 import SliderItem from '@/components/SliderItem';
 import { Colors } from '@/constants/Colors';
 import { NewsDataType } from '@/types';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import Animated, { useAnimatedRef, useAnimatedScrollHandler, useSharedValue } from 'react-native-reanimated';
 
@@ -21,14 +21,21 @@ const BreakingNews = ({newsList}: Props) => {
         }
     })
 
+    useEffect(() => {
+        setdata(newsList)
+    }, [newsList])
+
   return (
     <View style = {styles.container}>
       <Text style={styles.title}>Breaking News</Text>
       <View style={styles.slideWrapper}>
         <Animated.FlatList
         ref ={ref}
-        data ={newsList} 
-        keyExtractor={(_,index) => `list_items${index}`}
+        data ={data} 
+        /*not used this bcz: keyExtractor={(_,index) => `list_items${index}`} Keys must be stable 
+        across renders. With index keys, any insert/remove/reorder changes keys and React re-mounts
+        rows, causing lost state and animation glitches.*/
+        keyExtractor={(item, index) => item?.article_id ? `${item.article_id}-${index}` : `list_item_${index}`}
         horizontal= {true}
         showsHorizontalScrollIndicator ={false}
         pagingEnabled = {true}
