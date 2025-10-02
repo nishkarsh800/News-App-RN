@@ -1,8 +1,9 @@
 import { Colors } from '@/constants/Colors';
 import { NewsDataType } from '@/types';
 import { LinearGradient } from 'expo-linear-gradient';
+import { Link } from 'expo-router';
 import React from 'react';
-import { Dimensions, Image, StyleSheet, Text, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import Animated, { Extrapolation, interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
 type Props = {
@@ -40,6 +41,8 @@ const SliderItem = ({ slideItem, index, scrollX }: Props) => {
     });
 
     return (
+        <Link href={`/news/${slideItem.article_id}`} asChild>
+        <TouchableOpacity>
         <View style={styles.itemWrapper}>
             <Animated.View style={[styles.cardContainer, rnStyle]}>
                 {/* Image with corner radius */}
@@ -62,6 +65,8 @@ const SliderItem = ({ slideItem, index, scrollX }: Props) => {
                 </LinearGradient>
             </Animated.View>
         </View>
+        </TouchableOpacity>
+        </Link>
     );
 };
 

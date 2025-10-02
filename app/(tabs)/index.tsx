@@ -6,7 +6,7 @@ import NewsList from '@/components/NewsList';
 import SearchBar from '@/components/SearchBar';
 import { NewsDataType } from '@/types';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -19,6 +19,8 @@ const Page = (props: Props) => {
   const [breakingNews, setBreakingNews] = useState<NewsDataType[]>([])
   const [news, setNews] = useState<NewsDataType[]>([])
 
+  // store debounce timer ref (React Native → number type)
+  const debounceTimer = useRef<number | null>(null);
 
   useEffect(() => {
     getBreakingNews()  // called the breakingNews()
@@ -27,47 +29,53 @@ const Page = (props: Props) => {
   
 
   const getBreakingNews = async () => {
-  try {
-    setIsLoading(true); // start loading
-    const URL = `https://newsdata.io/api/1/news?apikey=${process.env.EXPO_PUBLIC_API_KEY}&language=en&image=1&removeduplicate=1&size=5`
-    const response = await axios.get(URL);
+    try {
+      setIsLoading(true);
+      const URL = `https://newsdata.io/api/1/news?apikey=${process.env.EXPO_PUBLIC_API_KEY}&language=en&image=1&removeduplicate=1&size=5`
+      const response = await axios.get(URL);
 
-    if (response && response.data) {
-      setBreakingNews(response.data.results);
+      if (response && response.data) {
+        setBreakingNews(response.data.results);
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLoading(false);
     }
-  } catch (error) {
-    console.error(error);
-  } finally {
-    setIsLoading(false); // stop loading
-  }
-};
+  };
 
+  const getNews = async (category: string = '') => {
+    try {
+      setIsNewsLoading(true);
+      let categoryString = ''
+      if (category.length !== 0) {
+        categoryString = `&category=${category}`
+      }
+      const URL = `https://newsdata.io/api/1/news?apikey=${process.env.EXPO_PUBLIC_API_KEY}&language=en&image=1&removeduplicate=1&size=10${categoryString}`
+      const response = await axios.get(URL)
 
-  const getNews = async (category: string='') => {
-  try {
-    setIsNewsLoading(true); // start loading
-    let categoryString = ''
-    if(category.length !== 0){
-      categoryString = `&category=${category}`
+      if (response && response.data) {
+        setNews(response.data.results)  
+      }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setIsNewsLoading(false);
     }
-    const URL = `https://newsdata.io/api/1/news?apikey=${process.env.EXPO_PUBLIC_API_KEY}&language=en&image=1&removeduplicate=1&size=10${categoryString}`
-    const response = await axios.get(URL)
+  };
 
-    if (response && response.data) {
-      setNews(response.data.results)  
+  const onCatChanged = (category: string) => {
+    // clear old timer if user taps again quickly
+    if (debounceTimer.current) {
+      clearTimeout(debounceTimer.current);
     }
-  } catch (error) {
-    console.error(error)
-  } finally {
-    setIsNewsLoading(false); // stop loading
-  }
-};
 
-
-  const onCatChanged = (category: string)=>{
-    console.log('Category: ', category);
-    setNews([]);
-    getNews(category);
+    // wait 500ms before firing request
+    debounceTimer.current = setTimeout(() => {
+      console.log('Category: ', category);
+      setNews([]);
+      getNews(category);
+    }, 500) as unknown as number; // ensure correct typing
   };
 
   return (
