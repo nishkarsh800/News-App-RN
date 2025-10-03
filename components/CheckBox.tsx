@@ -2,7 +2,7 @@ import { Colors } from '@/constants/Colors';
 import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { StyleSheet } from 'react-native';
-import Animated, { FadeIn, FadeOut, useAnimatedStyle, withTiming } from 'react-native-reanimated';
+import Animated, { FadeIn, FadeOut, LinearTransition, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 
 type Props = {
     label : string,
@@ -29,7 +29,10 @@ const CheckBox = ({label,checked,onPress}: Props) => {
     },[checked]);
 
   return (
-    <Animated.View style= {[styles.container, rnAnimatedConatinerStyle]}>
+    <Animated.View 
+    style= {[styles.container, rnAnimatedConatinerStyle]} 
+    onTouchEnd={onPress}
+    layout={LinearTransition.springify().mass(0.8)}>
       <Animated.Text style={[styles.label,rnTextStyle]}>{label}</Animated.Text>
       {checked &&(
         <Animated.View 
