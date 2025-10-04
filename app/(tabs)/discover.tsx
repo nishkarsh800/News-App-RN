@@ -1,7 +1,8 @@
 import CheckBox from '@/components/CheckBox'
 import SearchBar from '@/components/SearchBar'
 import { Colors } from '@/constants/Colors'
-import React from 'react'
+import { Link } from 'expo-router'
+import React, { useState } from 'react'
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import useNewsCategories from '../hooks/useNewsCategories'
@@ -14,11 +15,16 @@ const Page = (props: Props) => {
 
   const {newsCategories, toggleNewsCatogory} = useNewsCategories();
   const {newsCountries, toggleNewsCountry} = useNewsCountries();
-
+  const [searchQuery, setsearchQuery] = useState("")
+  const [category, setcategory] = useState("")
+  const [country, setcountry] = useState("")
 
   return (
     <View style={[styles.container,{paddingTop: safeTop + 20}]}>
-      <SearchBar withHorizonatalPadding ={false}/>
+      <SearchBar 
+      withHorizonatalPadding ={false} 
+      setSearchQuery={setsearchQuery}/>
+
       <Text style = {styles.title}>Categories</Text>
       <View style ={styles.listContainer}>
         {newsCategories.map((item) =>(
@@ -28,6 +34,7 @@ const Page = (props: Props) => {
          checked={item.selected} 
          onPress={()=>{
           toggleNewsCatogory(item.id)
+          setcategory(item.slug)
          }}
          />
         ))}
@@ -41,15 +48,21 @@ const Page = (props: Props) => {
          label={item.name} 
          checked={item.selected} 
          onPress={()=>{
-          toggleNewsCountry(index)
+          toggleNewsCountry(index);
+          setcountry(item.code)
          }}
          />
         ))}
       </View>
 
+      <Link href={{
+        pathname :`/news/search`,
+        params: {query: searchQuery, category, country}
+      }} asChild>
       <TouchableOpacity style ={styles.searchBtn}>
         <Text style ={styles.searchBtnTxt}>Search</Text>
       </TouchableOpacity>
+      </Link>
     </View>
   )
 }

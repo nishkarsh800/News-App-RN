@@ -5,9 +5,10 @@ import { StyleSheet, TextInput, View } from 'react-native'
 
 type Props = {
   withHorizonatalPadding : boolean
+  setSearchQuery : Function
 }
 
-const SearchBar = ({withHorizonatalPadding}: Props) => {
+const SearchBar = ({withHorizonatalPadding, setSearchQuery}: Props) => {
   return (
     <View style={[styles.container,withHorizonatalPadding && {paddingHorizontal: 20}]}> 
     // first view for icon and searchText
@@ -17,7 +18,8 @@ const SearchBar = ({withHorizonatalPadding}: Props) => {
         placeholder='Search here' 
         placeholderTextColor={Colors.lightGrey}
         style={styles.searchText}
-        autoCapitalize='none'/>
+        autoCapitalize='none'
+        onChangeText={query => setSearchQuery(query)}/>
      </View>
     </View>
   )
