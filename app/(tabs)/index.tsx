@@ -6,6 +6,7 @@ import NewsList from '@/components/NewsList';
 import SearchBar from '@/components/SearchBar';
 import { NewsDataType } from '@/types';
 import axios from 'axios';
+import { router } from 'expo-router';
 import React, { useEffect, useRef, useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -18,6 +19,7 @@ const Page = (props: Props) => {
   const [isNewsLoading, setIsNewsLoading] = useState(true);
   const [breakingNews, setBreakingNews] = useState<NewsDataType[]>([])
   const [news, setNews] = useState<NewsDataType[]>([])
+  const [searchQuery, setSearchQuery] = useState('')
 
   // store debounce timer ref (React Native → number type)
   const debounceTimer = useRef<number | null>(null);
@@ -81,7 +83,16 @@ const Page = (props: Props) => {
   return (
     <ScrollView style={[styles.container, { paddingTop: safeTop }]}>
       <Header />
-      <SearchBar withHorizonatalPadding ={true} />
+      <SearchBar
+        withHorizonatalPadding={true}
+        setSearchQuery={setSearchQuery}
+        onSubmit={(text) => {
+          const q = (text ?? searchQuery).trim()
+          if (q.length > 0) {
+            router.push({ pathname: '/news/search', params: { query: q } })
+          }
+        }}
+      />
       {isLoading?(
         <Loading size={'large'}/>
       ):(

@@ -6,9 +6,10 @@ import { StyleSheet, TextInput, View } from 'react-native'
 type Props = {
   withHorizonatalPadding : boolean
   setSearchQuery : Function
+  onSubmit?: (text: string) => void
 }
 
-const SearchBar = ({withHorizonatalPadding, setSearchQuery}: Props) => {
+const SearchBar = ({withHorizonatalPadding, setSearchQuery, onSubmit}: Props) => {
   return (
     <View style={[styles.container,withHorizonatalPadding && {paddingHorizontal: 20}]}> 
      <View style ={styles.searchBar}>
@@ -18,7 +19,15 @@ const SearchBar = ({withHorizonatalPadding, setSearchQuery}: Props) => {
         placeholderTextColor={Colors.lightGrey}
         style={styles.searchText}
         autoCapitalize='none'
-        onChangeText={query => setSearchQuery(query)}/>
+        onChangeText={query => setSearchQuery(query)}
+        returnKeyType='search'
+        onSubmitEditing={(e) => {
+          const text = e.nativeEvent.text ?? ''
+          if (onSubmit) {
+            onSubmit(text)
+          }
+        }}
+        />
      </View>
     </View>
   )
