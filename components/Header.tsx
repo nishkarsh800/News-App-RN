@@ -1,7 +1,6 @@
 import { Colors } from '@/constants/Colors'
-import { Ionicons } from '@expo/vector-icons'
 import React from 'react'
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Image, StyleSheet, Text, View } from 'react-native'
 
 type Props = {}
 
@@ -18,10 +17,6 @@ const Header = (props: Props) => {
             <Text style = {styles.userNameText}>Nick !</Text>
         </View>
         </View>
-        <TouchableOpacity onPress={ ()=> {}}>
-        <Ionicons name='notifications-outline' size={24} color={Colors.black}/>
-        </TouchableOpacity> 
-
     </View>
   )
 }

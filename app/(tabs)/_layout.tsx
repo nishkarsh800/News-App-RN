@@ -25,9 +25,11 @@ const TabLayout = () => {
           title: "Saved",
         }}
       />
+      {/* Keep the screen file but hide it from the tabs */}
       <Tabs.Screen
         name="settings"
         options={{
+          href: null,
           title: "Settings",
         }}
       />

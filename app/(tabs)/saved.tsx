@@ -1,16 +1,17 @@
 import Loading from '@/components/Loading'
 import NewsItem from '@/components/NewsItem'
+import { NewsDataType } from '@/types'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useIsFocused } from '@react-navigation/native'
 import axios from 'axios'
 import { Link, Stack } from 'expo-router'
 import React, { useEffect, useState } from 'react'
-import { FlatList, StyleSheet, TouchableOpacity, View } from 'react-native'
+import { FlatList, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 
 type Props = {}
 
 const Page = (props: Props) => {
-  const [bookmarkNews, setBookmarkNews] = useState([])
+  const [bookmarkNews, setBookmarkNews] = useState<NewsDataType[]>([])
   const [isLoading, setisLoading] = useState(true)
   const isFocused = useIsFocused();
 
@@ -18,23 +19,31 @@ const Page = (props: Props) => {
     fetchBookmark()
   }, [isFocused]);
   
-  const fetchBookmark = async() => {
-    await AsyncStorage.getItem('bookmark').then(async(token) => {
-      const res = JSON.parse(token);
-      setisLoading(true);
-      if(res){
-        console.log('Bookmark res: ', res);
-        let query_string = res.join(',');
-        console.log('Query string: ',query_string);
+  const fetchBookmark = async () => {
+    setisLoading(true);
+    try {
+      const token = await AsyncStorage.getItem('bookmark')
+      const res = token ? JSON.parse(token) : null
 
-        const response = await axios.get(`https://newsdata.io/api/1/news?apikey=${process.env.EXPO_PUBLIC_API_KEY}&id=${query_string}`)
-        setBookmarkNews(response.data.results);
-        setisLoading(false);
-      }else{
+      if (Array.isArray(res) && res.length > 0) {
+        const queryString = res.join(',')
+        const url = `https://newsdata.io/api/1/news?apikey=${process.env.EXPO_PUBLIC_API_KEY}&id=${queryString}`
+        try {
+          const response = await axios.get(url)
+          setBookmarkNews(response.data?.results ?? [])
+        } catch (error) {
+          console.error(error)
+          setBookmarkNews([])
+        }
+      } else {
         setBookmarkNews([])
-        setisLoading(false)
       }
-    })
+    } catch (e) {
+      console.error(e)
+      setBookmarkNews([])
+    } finally {
+      setisLoading(false)
+    }
   }
   return (
     <>
@@ -57,6 +66,12 @@ const Page = (props: Props) => {
                     </TouchableOpacity>
                 </Link>
             )}
+            ListEmptyComponent={
+              <View style={styles.emptyContainer}>
+                <Text style={styles.emptyText}>No saved articles yet</Text>
+                <Text style={styles.emptySubText}>Save articles to see them here.</Text>
+              </View>
+            }
           />
       )}
     </View>
@@ -71,4 +86,19 @@ const styles = StyleSheet.create({
     flex: 1,
     margin: 20
   },
+  emptyContainer: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 40
+  },
+  emptyText: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginBottom: 6
+  },
+  emptySubText: {
+    fontSize: 14,
+    color: '#777'
+  }
 })

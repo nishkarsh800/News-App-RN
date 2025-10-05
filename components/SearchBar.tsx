@@ -11,7 +11,6 @@ type Props = {
 const SearchBar = ({withHorizonatalPadding, setSearchQuery}: Props) => {
   return (
     <View style={[styles.container,withHorizonatalPadding && {paddingHorizontal: 20}]}> 
-    // first view for icon and searchText
      <View style ={styles.searchBar}>
         <Ionicons name='search-outline' size={20} color={Colors.lightGrey}/>
         <TextInput 
