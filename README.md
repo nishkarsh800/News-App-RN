@@ -19,13 +19,6 @@ A modern, feature-rich news application built with React Native and Expo. Stay u
 
 ## 📱 App Structure
 
-   npx expo start
-   ```
-
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
 ```
 app/
 ├── (tabs)/
