@@ -1,50 +1,60 @@
-# Welcome to your Expo app 👋
+# 📰 News App - React Native
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A modern, feature-rich news application built with React Native and Expo. Stay updated with the latest news from around the world with an intuitive and beautiful user interface.
 
-## Get started
 
-1. Install dependencies
+## Features  
+- **Home**: Breaking news carousel, quick search, category tabs, and latest articles 
+- **Discover**: Advanced search with category and country filters 
+- **Saved**: Bookmarked articles with offline access 
+- **Article View**: Full article content with bookmark and share options 
+- **Search Results**: Filtered news with real-time search  
 
-   ```bash
-   npm install
-   ```
+## Key Functionalities  
+- Real-time news from NewsData.io API 
+- Category filtering (Politics, Science, Entertainment, Sports, Technology, Business) 
+- Country-specific news 
+- Bookmark system with AsyncStorage 
+- Offline support for saved articles
 
-2. Start the app
+## 📱 App Structure
 
-   ```bash
    npx expo start
    ```
 
-In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)
 - [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
 - [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+```
+app/
+├── (tabs)/
+│   ├── index.tsx          # Home screen with breaking news
+│   ├── discover.tsx       # Advanced search and filters
+│   └── saved.tsx          # Saved articles
+├── news/
+│   ├── [id].tsx          # Individual article view
+│   └── search.tsx        # Search results
+├── hooks/
+│   ├── useNewsCategories.tsx
+│   └── useNewsCountry.tsx
+└── _layout.tsx           # Root layout
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+components/
+├── BreakingNews.tsx      # Breaking news carousel
+├── Categories.tsx        # Category filter component
+├── NewsItem.tsx          # Individual news item
+├── NewsList.tsx          # News list container
+├── SearchBar.tsx         # Search input component
+└── ...                   # Other UI components
 
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+constants/
+├── Categories.ts         # News categories
+├── Colors.ts            # App color scheme
+├── CountryList.ts       # Available countries
+└── Icons.tsx            # Icon definitions
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
 
-## Learn more
 
-To learn more about developing your project with Expo, look at the following resources:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
