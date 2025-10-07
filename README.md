@@ -48,6 +48,12 @@ constants/
 └── Icons.tsx            # Icon definitions
 ```
 
+<br><br>
+  
+<h1 align="center">📸 App Demo</h1>
+
+<p align = "center">https://github.com/user-attachments/assets/770893be-c606-4c0a-a028-a521ba4ef5cd</p>
+<br>
 
 
 
